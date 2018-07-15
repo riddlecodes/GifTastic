@@ -1,46 +1,55 @@
-
-    // Adding click event listen listener to all buttons
-    $("button").on("click", function() {
-      // Grabbing and storing the data-animal property value from the button
-      var animal = $(this).attr("data-animal");
-
-      // Constructing a queryURL using the animal name
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        animal + "&api_key=1Bs9bNPb6izjpiMSf42w3dMEWadK1FeM";
-
-      // Performing an AJAX request with the queryURL
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-        // After data comes back from the request
-        .then(function(response) {
-          console.log(queryURL);
-
-          console.log(response);
-          // storing the data from the AJAX request in the results variable
-          var results = response.data;
-
-          // Looping through each result item
-          for (var i = 0; i < results.length; i++) {
-
-            // Creating and storing a div tag
-            var animalDiv = $("<div>");
-
-            // Creating a paragraph tag with the result item's rating
-            var p = $("<p>").text("Rating: " + results[i].rating);
-
-            // Creating and storing an image tag
-            var animalImage = $("<img>");
-            // Setting the src attribute of the image to a property pulled off the result item
-            animalImage.attr("src", results[i].images.fixed_height.url);
-
-            // Appending the paragraph and image tag to the animalDiv
-            animalDiv.append(p);
-            animalDiv.append(animalImage);
-
-            // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
-            $("#gifs-appear-here").prepend(animalDiv);
-          }
-        });
+$(document).ready(function () {
+    
+    var topics = ["guitar", "drums", "piano", "trumpet", "trombone", "harmonica", "tuba", "ukulele", "mandolin", "lute", "sitar", "harp", "cello", "violin"];
+    
+    $.each(topics, function (index, value) {
+        
+        var button = $("<button>");
+        button.attr("data-instrument", value);
+        button.text(value);
+        $("#musical-instruments").append(button);
+        
     });
+
+
+
+    $("button").on("click", function () {
+
+        var instrument = $(this).attr("data-instrument");
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+            instrument + "&apikey=1Bs9bNPb6izjpiMSf42w3dMEWadK1FeM&limit=10";
+
+        // Performing an AJAX request with the queryURL
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        .then(function (response) {
+            var results = response.data;
+            for (var i = 0; i < results.length; i++) {
+
+                if (results[i].rating !== "r") {
+                    
+                    var p = $("<p>").text("Rating: " + results[i].rating);
+
+                    var instrumentsImage = $("<img>");
+
+                    var stillImage = results[i].images.fixed_height_still.url;
+
+                    // var animatedImage = results[i].images.fixed_height_still.url);
+
+                    instrumentsImage.attr("src", stillImage);
+
+                    p.append(instrumentsImage);
+
+                    $("#result").append(p);
+
+                } // end of if
+
+            } // end of for loop
+
+        }); // end of ajax  
+
+    }); // end of button click
+
+}); // end of doc ready
