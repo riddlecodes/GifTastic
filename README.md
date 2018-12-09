@@ -1,1 +1,1 @@
-# GifTastic
+https://riddleparty.github.io/GifTastic/
