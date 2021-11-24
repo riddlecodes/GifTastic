@@ -1,1 +1,1 @@
-https://riddleparty.github.io/GifTastic/
+https://riddlecodes.github.io/GifTastic/
